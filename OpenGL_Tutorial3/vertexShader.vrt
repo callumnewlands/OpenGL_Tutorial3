@@ -1,0 +1,7 @@
+#version 330 core //Specifies the version of GLSL (corresponds to OpenGL 3.3 core)
+layout (location = 0) in vec3 posAttribute; //Vertex attribute from code, location = 0 specifies it is the attribute with index 0
+ 
+void main()
+{
+    gl_Position = vec4(posAttribute.xyz, 1.0); //Converts posAttribute to a vec4 with w component = 1.0
+}
