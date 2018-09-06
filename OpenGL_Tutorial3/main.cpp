@@ -2,52 +2,12 @@
 
 int main()
 {
-	// Initilise GLFW with OpenGL version 3.3 core
-	glfwInit();
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	GLFWwindow* window = setupFirstWindow();
+	if (window == NULL) return -1;
 
-	// Create a window
-	GLFWwindow* window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "windowTitle", NULL, NULL);
-	if (window == NULL) 
-	{
-		std::cout << "ERROR creating window";
-		glfwTerminate();
-		return -1; 
-	}
-	glfwMakeContextCurrent(window);
-	glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
-	glfwSetFramebufferSizeCallback(window, onWindowResize); // Set window resize callback
+	std::vector<vertex> vertices = getTriangleVertices();
 
-	// Initialise GLEW
-	// Has to be called after window is created
-	GLenum errorCode = glewInit();
-	if (errorCode != GLEW_OK)
-	{
-		std::cout << "ERROR initialising GLEW";
-		glfwTerminate();
-		return -1;
-	}
-
-	float vertices[] = {
-		-0.5f, -0.5f, 0.0f,
-		 0.5f, -0.5f, 0.0f,
-		 0.0f,  0.5f, 0.0f
-	};
-
-	unsigned int VAO, VBO;
-	glGenVertexArrays(1, &VAO);
-	glGenBuffers(1, &VBO);
-
-	// Bind VAO first before the buffers it will contain
-	glBindVertexArray(VAO);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);  // Bind buffer
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW); // Set buffer data
-
-	// Configure poistion attribute
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0); 
+	unsigned int VAO = getVAO(vertices);
 
 	unsigned int shaderProgram = getShaderProgram("vertexShader.vrt", "fragmentShader.frg");
 
@@ -68,6 +28,40 @@ int main()
 	// Exit OpenGL
 	glfwTerminate();
 	return 0;
+}
+
+// Call first to setup openGL and return a new window
+GLFWwindow* setupFirstWindow()
+{
+	// Initilise GLFW with OpenGL version 3.3 core
+	glfwInit();
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+	// Create a window
+	GLFWwindow* window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "windowTitle", NULL, NULL);
+	if (window == NULL)
+	{
+		std::cout << "ERROR creating window";
+		glfwTerminate();
+		return NULL;
+	}
+	glfwMakeContextCurrent(window);
+	glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+	glfwSetFramebufferSizeCallback(window, onWindowResize); // Set window resize callback
+
+	// Initialise GLEW
+	// Has to be called after window is created
+	GLenum errorCode = glewInit();
+	if (errorCode != GLEW_OK)
+	{
+		std::cout << "ERROR initialising GLEW";
+		glfwTerminate();
+		return NULL;
+	}
+
+	return window;
 }
 
 void onWindowResize(GLFWwindow* window, int width, int height)
@@ -163,4 +157,29 @@ void checkCompileErrors(unsigned int shader, std::string type)
 			std::cout << "ERROR::PROGRAM_LINKING_ERROR of type: " << type << "\n" << infoLog << "\n -- --------------------------------------------------- -- " << std::endl;
 		}
 	}
+}
+
+unsigned int getVAO(std::vector<vertex> vertices)
+{
+	unsigned int VAO, VBO;
+	glGenVertexArrays(1, &VAO);
+	glGenBuffers(1, &VBO);
+
+	// Bind VAO first before the buffers it will contain
+	glBindVertexArray(VAO);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);  // Bind buffer
+	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(vertex), &vertices[0], GL_STATIC_DRAW); // Set buffer data
+
+	// Configure poistion attribute
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(vertex), (void*)0);
+	glEnableVertexAttribArray(0);
+
+	return VAO;
+}
+
+std::vector<vertex> getTriangleVertices()
+{
+	return { vertex(-0.5f, -0.5f, 0.0f),
+			 vertex(0.5f, -0.5f, 0.0f),
+			 vertex(0.0f,  0.5f, 0.0f) };
 }

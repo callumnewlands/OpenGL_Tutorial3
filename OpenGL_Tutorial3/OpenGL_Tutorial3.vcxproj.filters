@@ -16,9 +16,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="fragmentShader.frg" />
+    <None Include="vertexShader.vrt" />
     <None Include="glew32.dll" />
     <None Include="glfw3.dll" />
-    <None Include="vertexShader.vrt" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -27,6 +27,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Vertex.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
