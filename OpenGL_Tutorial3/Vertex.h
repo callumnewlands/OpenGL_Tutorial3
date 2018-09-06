@@ -7,5 +7,5 @@ struct vertex
 
 	vertex() { position = glm::vec3();  }
 	vertex(float x, float y, float z) { position = glm::vec3(x, y, z); }
-	~vertex();
+	~vertex() { }
 };

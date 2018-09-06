@@ -21,6 +21,7 @@ GLFWwindow* setupFirstWindow();
 void checkCompileErrors(unsigned int shader, std::string type);
 unsigned int getVAO(std::vector<vertex> vertices);
 std::vector<vertex> getTriangleVertices();
+std::vector<vertex> getCubeVertices();
 
 const int WINDOW_WIDTH = 800;
 const int WINDOW_HEIGHT = 600;

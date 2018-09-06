@@ -5,7 +5,7 @@ int main()
 	GLFWwindow* window = setupFirstWindow();
 	if (window == NULL) return -1;
 
-	std::vector<vertex> vertices = getTriangleVertices();
+	std::vector<vertex> vertices = getCubeVertices();
 
 	unsigned int VAO = getVAO(vertices);
 
@@ -19,7 +19,7 @@ int main()
 
 		glUseProgram(shaderProgram); // activates the shader program
 		glBindVertexArray(VAO); // binds the triangle's VAO
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		glDrawArrays(GL_TRIANGLES, 0, vertices.size());
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
@@ -64,11 +64,13 @@ GLFWwindow* setupFirstWindow()
 	return window;
 }
 
+// Window resize callback
 void onWindowResize(GLFWwindow* window, int width, int height)
 {
 	glViewport(0, 0, width, height);
 }
 
+// Create a shader program from the 2 shaders passed as arguments
 unsigned int getShaderProgram(const GLchar* vertexPath, const GLchar* fragmentPath)
 {
 	// 1. retrieve the vertex/fragment source code from filePath
@@ -135,6 +137,7 @@ unsigned int getShaderProgram(const GLchar* vertexPath, const GLchar* fragmentPa
 	return id;
 }
 
+// Check shader compilation errors
 void checkCompileErrors(unsigned int shader, std::string type)
 {
 	int success;
@@ -159,6 +162,7 @@ void checkCompileErrors(unsigned int shader, std::string type)
 	}
 }
 
+// Generate a VAO from the vertex data passed as an argument
 unsigned int getVAO(std::vector<vertex> vertices)
 {
 	unsigned int VAO, VBO;
@@ -171,7 +175,7 @@ unsigned int getVAO(std::vector<vertex> vertices)
 	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(vertex), &vertices[0], GL_STATIC_DRAW); // Set buffer data
 
 	// Configure poistion attribute
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(vertex), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(vertex), (void*)0);
 	glEnableVertexAttribArray(0);
 
 	return VAO;
@@ -182,4 +186,49 @@ std::vector<vertex> getTriangleVertices()
 	return { vertex(-0.5f, -0.5f, 0.0f),
 			 vertex(0.5f, -0.5f, 0.0f),
 			 vertex(0.0f,  0.5f, 0.0f) };
+}
+
+std::vector<vertex> getCubeVertices()
+{
+	return { vertex(-0.5f, -0.5f, -0.5f),
+			 vertex( 0.5f, -0.5f, -0.5f),
+			 vertex( 0.5f,  0.5f, -0.5f),
+			 vertex( 0.5f,  0.5f, -0.5f),
+			 vertex(-0.5f,  0.5f, -0.5f),
+		 	 vertex(-0.5f, -0.5f, -0.5f),
+
+			 vertex(-0.5f, -0.5f,  0.5f),
+			 vertex( 0.5f, -0.5f,  0.5f),
+			 vertex( 0.5f,  0.5f,  0.5f),
+			 vertex( 0.5f,  0.5f,  0.5f),
+			 vertex(-0.5f,  0.5f,  0.5f),
+			 vertex(-0.5f, -0.5f,  0.5f),
+
+			 vertex(-0.5f,  0.5f,  0.5f),
+			 vertex(-0.5f,  0.5f, -0.5f),
+			 vertex(-0.5f, -0.5f, -0.5f),
+			 vertex(-0.5f, -0.5f, -0.5f),
+			 vertex(-0.5f, -0.5f,  0.5f),
+			 vertex(-0.5f,  0.5f,  0.5f),
+
+			 vertex( 0.5f,  0.5f,  0.5f),
+			 vertex( 0.5f,  0.5f, -0.5f),
+			 vertex( 0.5f, -0.5f, -0.5f),
+			 vertex( 0.5f, -0.5f, -0.5f),
+			 vertex( 0.5f, -0.5f,  0.5f),
+			 vertex( 0.5f,  0.5f,  0.5f),
+
+			 vertex(-0.5f, -0.5f, -0.5f),
+			 vertex( 0.5f, -0.5f, -0.5f),
+			 vertex( 0.5f, -0.5f,  0.5f),
+			 vertex( 0.5f, -0.5f,  0.5f),
+			 vertex(-0.5f, -0.5f,  0.5f),
+			 vertex(-0.5f, -0.5f, -0.5f),
+
+			 vertex(-0.5f,  0.5f, -0.5f),
+			 vertex( 0.5f,  0.5f, -0.5f),
+			 vertex( 0.5f,  0.5f,  0.5f),
+			 vertex( 0.5f,  0.5f,  0.5f),
+			 vertex(-0.5f,  0.5f,  0.5f),
+			 vertex(-0.5f,  0.5f, -0.5f)};
 }
