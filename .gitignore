@@ -259,3 +259,5 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+/OpenGL_Tutorial3/My Advisor Results - OpenGL_Tutorial3
+/OpenGL_Tutorial3/My Inspector Results - OpenGL_Tutorial3

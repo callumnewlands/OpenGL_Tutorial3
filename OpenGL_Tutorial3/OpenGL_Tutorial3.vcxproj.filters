@@ -13,10 +13,17 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Shader Files">
+      <UniqueIdentifier>{4b9ef96a-820f-4332-8cdc-c3a0b6e480ae}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="fragmentShader.frg" />
-    <None Include="vertexShader.vrt" />
+    <None Include="fragmentShader.frg">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="vertexShader.vrt">
+      <Filter>Shader Files</Filter>
+    </None>
     <None Include="glew32.dll" />
     <None Include="glfw3.dll" />
   </ItemGroup>
